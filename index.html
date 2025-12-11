@@ -10,9 +10,8 @@
     <link rel="shortcut icon" type="image/png" href="nasdhayo.jpg">
     <link rel="stylesheet" href="style.css">
     <title>study room</title>
-    <style>
-        
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
 </head>
 
 <body>
@@ -390,6 +389,32 @@
     </iframe>
     <br>
 
+    <div class="form-wrap">
+    <div class="container">
+        <form id="contact-form">
+            <h2>Contact Us</h2>
+
+            <div class="input-group">
+                <label>Name</label>
+                <input type="text" id="name" required />
+            </div>
+
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="email" required />
+            </div>
+
+            <div class="input-group">
+                <label>Message</label>
+                <textarea id="message" rows="5" required></textarea>
+            </div>
+
+            <button type="submit">Send Message</button>
+            <p id="status"></p>
+        </form>
+    </div>
+    </div>
+
 
     <script>
         const LOGIN_DURATION = 60 * 60 * 1000; // 1 hour in ms
@@ -449,6 +474,34 @@
 
         // Run on page load
         checkStoredLogin();
+
+
+        (function () {
+    emailjs.init("uS2twGvhTSNwkxTyc");
+})();
+
+document.getElementById("contact-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const params = {
+        from_name: document.getElementById("name").value,
+        reply_to: document.getElementById("email").value,
+        message: document.getElementById("message").value,
+    };
+
+    emailjs.send("service_s45xi0n", "template_xrytola", params)
+    .then(() => {
+        document.getElementById("status").style.color = "lightgreen";
+        document.getElementById("status").innerText = "Message sent successfully!";
+
+        document.getElementById("contact-form").reset();
+    })
+    .catch((error) => {
+        document.getElementById("status").style.color = "red";
+        document.getElementById("status").innerText = "Failed to send message. Try again!";
+        console.error(error);
+    });
+});
     </script>
 
 </body>
